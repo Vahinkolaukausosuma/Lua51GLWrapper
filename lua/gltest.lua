@@ -5,11 +5,9 @@ Wh = Width / 2
 Hh = Height / 2
 LastRun = os.clock()
 --LastTime = os.time()
-function vec2(x,y) return {x=x,y=y} end
-boxPos = vec2(400,300)
-boxSize = vec2(70,50)
+function Box(x,y,vx,vy,sx,sy) return {x=x,y=y,vx=vx,vy=vy,sx=sx,sy=sy} end
+box = Box(400,300,math.random(-160,160),math.random(-160,160),70,50)
 math.randomseed(os.time())
-boxVel = vec2(math.random(-160,160),math.random(-160,160))
 CreateDisplay(Width,Height)
 EnableVSync(0)
 
@@ -22,7 +20,6 @@ function DrawLine(x,y,x2,y2)
 	GlDrawLine(x,y,x2,y2)
 end
 function DrawRect(x,y,w,h)
-	
 	x = (x-Wh) / Wh
 	y = (y-Hh) / Hh
 	w = w / Wh
@@ -47,14 +44,14 @@ while not DisplayIsClosed() do
 	DisplayClear()
 	GlBeginLines()
 	
-	boxPos.x = boxPos.x + boxVel.x * TimeLapsed
-	boxPos.y = boxPos.y + boxVel.y * TimeLapsed
-	if boxPos.x < 0 then boxPos.x = 0 boxVel.x = boxVel.x * -1 end -- left
-	if boxPos.y < 0 then boxPos.y = 0 boxVel.y = boxVel.y * -1 end -- bottom
-	if boxPos.x+boxSize.x > Width then boxPos.x = Width-boxSize.x boxVel.x = boxVel.x * -1 end --right
-	if boxPos.y+boxSize.y> Height then boxPos.y = Height-boxSize.y boxVel.y = boxVel.y * -1 end --top
+	box.x = box.x + box.vx * TimeLapsed
+	box.y = box.y + box.vy * TimeLapsed
+	if box.x < 0 then box.x = 0 box.vx = box.vx * -1 end -- left
+	if box.y < 0 then box.y = 0 box.vy = box.vy * -1 end -- bottom
+	if box.x+box.sx > Width then box.x = Width-box.sx box.vx = box.vx * -1 end --right
+	if box.y+box.sy > Height then box.y = Height-box.sy box.vy = box.vy * -1 end --top
 
-	DrawRect(boxPos.x,boxPos.y,boxSize.x,boxSize.y)
+	DrawRect(box.x,box.y,box.sx,box.sy)
 	GlEnd()
 	DisplayUpdate()
 end
