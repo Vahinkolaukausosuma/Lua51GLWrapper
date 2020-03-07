@@ -1,5 +1,5 @@
 if not CreateDisplay then require"glwrapper" end
-if not sleep then require"socket" sleep = socket.sleep end
+--if not sleep then require"socket" sleep = socket.sleep end
 Width = 25
 Height = 25
 Hh = Height/2
@@ -65,7 +65,7 @@ while not DisplayIsClosed() do
 	end
 	
 	if MinFrameTime-TimeLapsed > 0 then
-		sleep((MinFrameTime-TimeLapsed)/1000)
+		--sleep((MinFrameTime-TimeLapsed)/1000)
 	end
 end
 
