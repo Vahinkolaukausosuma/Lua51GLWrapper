@@ -82,6 +82,9 @@
       <Command>
       </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy /Y "C:\Users\Jonni\source\repos\Lua51GLWrapper\OpenGLProject\Release\core.dll" "C:\Users\Jonni\Desktop\luasocket2kopiokopio\glwrapper\core.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

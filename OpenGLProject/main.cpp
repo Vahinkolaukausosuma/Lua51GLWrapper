@@ -11,11 +11,7 @@ extern "C"
 #include "lua51/include/lualib.h"
 }
 
-#ifdef _WIN32
 #pragma comment(lib, "lua51/lua5.1.lib")
-//#define WIN32_LEAN_AND_MEAN
-//#pragma comment(linker,"/ENTRY:luaopen_glwrapper_core")
-#endif
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -76,7 +72,7 @@ int ScreenCap(lua_State* L)
 	bmi.biWidth = ScreenX;
 	bmi.biHeight = -ScreenY;
 	bmi.biCompression = BI_RGB;
-	bmi.biSizeImage = 0;// 3 * ScreenX * ScreenY;
+	bmi.biSizeImage = 0;
 
 	if (ScreenData)
 		free(ScreenData);
@@ -259,67 +255,50 @@ int Lua_LoadTexture(lua_State* L)
 	for (int i = 0; i < width * height; i++)
 	{
 		unsigned char* pixelOffset = data + (i)*bytePerPixel;
-		unsigned char r = pixelOffset[0];
-		unsigned char g = pixelOffset[1];
-		unsigned char b = pixelOffset[2];
-		unsigned char a = channelCount >= 4 ? pixelOffset[3] : 0xff;
+		//unsigned char r = pixelOffset[0];
+		//unsigned char g = pixelOffset[1];
+		//unsigned char b = pixelOffset[2];
+		//unsigned char a = channelCount >= 4 ? pixelOffset[3] : 0xff;
 
 		lua_createtable(L, 4, 0);
 
 
 		lua_pushlstring(L, "r", 1);
-		lua_pushinteger(L, r);
+		lua_pushinteger(L, pixelOffset[0]);
 		lua_settable(L, -3);
 
 		lua_pushlstring(L, "g", 1);
-		lua_pushinteger(L, g);
+		lua_pushinteger(L, pixelOffset[1]);
 		lua_settable(L, -3);
 
 		lua_pushlstring(L, "b", 1);
-		lua_pushinteger(L, b);
+		lua_pushinteger(L, pixelOffset[2]);
 		lua_settable(L, -3);
 
 		lua_pushlstring(L, "a", 1);
-		lua_pushinteger(L, a);
+		lua_pushinteger(L, channelCount >= 4 ? pixelOffset[3] : 0xff);
 		lua_settable(L, -3);
-
 
 
 		lua_rawseti(L, -2, i);
 		//lua_createtable(L, 4, 0); 
 
-		//lua_pushinteger(L, r);
+		//lua_pushinteger(L, pixelOffset[0]);
 		//lua_rawseti(L, -2, 1);
 
-		//lua_pushinteger(L, g);
+		//lua_pushinteger(L, pixelOffset[1]);
 		//lua_rawseti(L, -2, 2);  
 
-		//lua_pushinteger(L, b);
+		//lua_pushinteger(L, pixelOffset[2]);
 		//lua_rawseti(L, -2, 3);
 
-		//lua_pushinteger(L, a);
+		//lua_pushinteger(L, channelCount >= 4 ? pixelOffset[3] : 0xff);
 		//lua_rawseti(L, -2, 4);
 
 		//lua_rawseti(L, -2, i); 
 	}
-
+	free(data);
 	return 4;
-}
-
-int Lua_TableTest(lua_State* L)
-{
-	lua_newtable(L);
-	int top = lua_gettop(L);
-
-
-	const char* key = "boob";
-	const char* value = "idk bro";
-	lua_pushlstring(L, key, 4);
-	lua_pushlstring(L, value, 7);
-	lua_settable(L, top);
-
-
-	return 1;
 }
 
 
