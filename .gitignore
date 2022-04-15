@@ -1,0 +1,14 @@
+*.ipch
+*.ipdb
+*.db
+*.suo
+*.pdb
+*.tlog
+*.obj
+*.iobj
+*.exp
+*.recipe
+*FileListAbsolute.txt
+*.log
+*.lib
+.vs

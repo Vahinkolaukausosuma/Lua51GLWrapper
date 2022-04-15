@@ -255,10 +255,6 @@ int Lua_LoadTexture(lua_State* L)
 	for (int i = 0; i < width * height; i++)
 	{
 		unsigned char* pixelOffset = data + (i)*bytePerPixel;
-		//unsigned char r = pixelOffset[0];
-		//unsigned char g = pixelOffset[1];
-		//unsigned char b = pixelOffset[2];
-		//unsigned char a = channelCount >= 4 ? pixelOffset[3] : 0xff;
 
 		lua_createtable(L, 4, 0);
 
