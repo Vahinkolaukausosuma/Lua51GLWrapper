@@ -192,7 +192,7 @@ int SetWindowPointer(lua_State* L)
 
 int Lua_GlDraw2f(lua_State* L)
 {
-	glVertex2f((float)lua_tonumber(L, -2), (float)lua_tonumber(L, -1));
+	glVertex2f((float)lua_tonumber(L, -1), (float)lua_tonumber(L, -2));
 	return 0;
 }
 int Lua_glVertex2f(lua_State* L)
