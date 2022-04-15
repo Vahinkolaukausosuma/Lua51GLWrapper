@@ -1,5 +1,8 @@
+#define WINDOWS_IGNORE_PACKING_MISMATCH
 #include <GL/glew.h>
+#include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL.h>
+
 #include <iostream>
 #include <Windows.h>
 //#include <string>
@@ -27,6 +30,19 @@ BYTE* ScreenData = 0;
 int main(int argc, char* argv[])
 {
 	return 1;
+}
+bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey) {
+	// Get window handle (https://stackoverflow.com/a/24118145/3357935)
+	SDL_SysWMinfo wmInfo;
+	SDL_VERSION(&wmInfo.version);  // Initialize wmInfo
+	SDL_GetWindowWMInfo(window, &wmInfo);
+	HWND hWnd = wmInfo.info.win.window;
+
+	// Change window type to layered (https://stackoverflow.com/a/3970218/3357935)
+	SetWindowLong(hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+
+	// Set transparency color
+	return SetLayeredWindowAttributes(hWnd, colorKey, 0, LWA_COLORKEY);
 }
 
 int CreateDisplay(lua_State* L)
@@ -234,6 +250,12 @@ int SetAlpha(lua_State* L)
 	SDL_SetWindowOpacity(WindowTable[WindowPointer], lua_tonumber(L, -1));
 	return 0;
 }
+int MakeWindowSeethrough(lua_State* L)
+{
+	COLORREF idk = 0xFF000000;
+	MakeWindowTransparent(WindowTable[WindowPointer], idk);
+	return 0;
+}
 
 
 int Lua_LoadTexture(lua_State* L)
@@ -322,5 +344,6 @@ extern "C" int __declspec(dllexport) luaopen_glwrapper_core(lua_State * L)
 	lua_register(L, "SetAlpha", SetAlpha);
 	lua_register(L, "SetWindowPointer", SetWindowPointer);
 	lua_register(L, "GlDraw2f", Lua_GlDraw2f);
+	lua_register(L, "MakeWindowSeethrough", MakeWindowSeethrough);
 	return 1;
 }
