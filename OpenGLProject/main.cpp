@@ -45,6 +45,27 @@ bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey) {
 	return SetLayeredWindowAttributes(hWnd, colorKey, 0, LWA_COLORKEY);
 }
 
+int Lua_keybd_event(lua_State* L)
+{
+	keybd_event((BYTE)lua_tointeger(L, -2), MapVirtualKey((BYTE)lua_tointeger(L, -2), 0), KEYEVENTF_EXTENDEDKEY, 0);
+	Sleep(lua_tointeger(L, -1));
+	keybd_event((BYTE)lua_tointeger(L, -2), MapVirtualKey((BYTE)lua_tointeger(L, -2), 0), KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+	return 1;
+}
+int Lua_IsKeyDown(lua_State* L)
+{
+	if ((GetKeyState(lua_tointeger(L, -1)) & 0x8000) != 0)
+	{
+		lua_pushboolean(L, true);
+	}
+	else
+	{
+		lua_pushboolean(L, false);
+	}
+	return 1;
+}
+
+
 int CreateDisplay(lua_State* L)
 {
 	int width = (int)lua_tonumber(L, -4);
@@ -345,5 +366,7 @@ extern "C" int __declspec(dllexport) luaopen_glwrapper_core(lua_State * L)
 	lua_register(L, "SetWindowPointer", SetWindowPointer);
 	lua_register(L, "GlDraw2f", Lua_GlDraw2f);
 	lua_register(L, "MakeWindowSeethrough", MakeWindowSeethrough);
+	lua_register(L, "IsKeyDown", Lua_IsKeyDown);
+	lua_register(L, "keybd_event", Lua_keybd_event);
 	return 1;
 }
