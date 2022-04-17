@@ -110,7 +110,7 @@ int ScreenCap(lua_State* L)
 	bmi.biHeight = -ScreenY;
 	bmi.biCompression = BI_RGB;
 	bmi.biSizeImage = 0;
-
+	//printf("w=%d, h=%d\n", ScreenX , ScreenY);
 	if (ScreenData)
 		free(ScreenData);
 	ScreenData = (BYTE*)malloc(4 * ScreenX * ScreenY);
@@ -127,20 +127,14 @@ int ReadPixelColor(lua_State* L)
 {
 	int x = (int)lua_tonumber(L, -2);
 	int y = (int)lua_tonumber(L, -1);
-
-	if (4 * ((y * ScreenX) + x) + 2 < ScreenX * ScreenY)
+	//printf("x=%d, y=%d\n",x,y);
+	
+	if (x >= 0 && x <= ScreenX && y >= 0 && y <= ScreenY)
 	{
-		if (4 * ((y * ScreenX) + x) + 1 < ScreenX * ScreenY)
-		{
-			if (4 * ((y * ScreenX) + x) < ScreenX * ScreenY)
-			{
-				//printf("%d %d", ScreenX, ScreenY);
-				lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x) + 2]);
-				lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x) + 1]);
-				lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x)]);
-				return 3;
-			}
-		}
+		lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x) + 2]);
+		lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x) + 1]);
+		lua_pushinteger(L, ScreenData[4 * ((y * ScreenX) + x)]);
+		return 3;
 	}
 	return 0;
 }
@@ -209,14 +203,14 @@ int Lua_displayUpdate(lua_State* L)
 
 int Lua_glColor4f(lua_State* L)
 {
-	glColor4f((float)lua_tonumber(L, -4), (float)lua_tonumber(L, -3), (float)lua_tonumber(L, -2), (float)lua_tonumber(L, -1));
+	glColor4f((float)lua_tonumber(L, -4) / 255.f, (float)lua_tonumber(L, -3) / 255.f, (float)lua_tonumber(L, -2) / 255.f, (float)lua_tonumber(L, -1) / 255.f);
 	return 0;
 }
 
 int Lua_glColor3f(lua_State* L)
 {
 
-	glColor3f((float)lua_tonumber(L, -3), (float)lua_tonumber(L, -2), (float)lua_tonumber(L, -1));
+	glColor3f((float)lua_tonumber(L, -3)/255.f, (float)lua_tonumber(L, -2)/255.f, (float)lua_tonumber(L, -1)/255.f);
 	return 0;
 }
 
@@ -273,11 +267,16 @@ int SetAlpha(lua_State* L)
 }
 int MakeWindowSeethrough(lua_State* L)
 {
-	COLORREF idk = 0xFF000000;
+	COLORREF idk = 0x00000000;
 	MakeWindowTransparent(WindowTable[WindowPointer], idk);
 	return 0;
 }
 
+int Lua_Sleep(lua_State* L)
+{
+	Sleep(lua_tonumber(L, -1));
+	return 0;
+}
 
 int Lua_LoadTexture(lua_State* L)
 {
@@ -368,5 +367,6 @@ extern "C" int __declspec(dllexport) luaopen_glwrapper_core(lua_State * L)
 	lua_register(L, "MakeWindowSeethrough", MakeWindowSeethrough);
 	lua_register(L, "IsKeyDown", Lua_IsKeyDown);
 	lua_register(L, "keybd_event", Lua_keybd_event);
+	lua_register(L, "Sleep", Lua_Sleep);
 	return 1;
 }
