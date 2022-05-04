@@ -1,4 +1,4 @@
-#define WINDOWS_IGNORE_PACKING_MISMATCH
+#define WINDOWS_IGNORE_PACKING_MISMATCH // XD
 #include <GL/glew.h>
 #include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL.h>
@@ -7,14 +7,26 @@
 #include <Windows.h>
 //#include <string>
 
+
+
 extern "C"
 {
 #include "lua51/include/lua.h"
 #include "lua51/include/lauxlib.h"
 #include "lua51/include/lualib.h"
 }
-
 #pragma comment(lib, "lua51/lua5.1.lib")
+
+
+//extern "C"
+//{
+//#include "luajit210b3/include/lua.h"
+//#include "luajit210b3/include/lauxlib.h"
+//#include "luajit210b3/include/lualib.h"
+//}
+//#pragma comment(lib, "luajit210b3/lua51.lib")
+
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -31,6 +43,7 @@ int main(int argc, char* argv[])
 {
 	return 1;
 }
+
 bool MakeWindowTransparent(SDL_Window* window, COLORREF colorKey) {
 	// Get window handle (https://stackoverflow.com/a/24118145/3357935)
 	SDL_SysWMinfo wmInfo;
@@ -210,7 +223,7 @@ int Lua_glColor4f(lua_State* L)
 int Lua_glColor3f(lua_State* L)
 {
 
-	glColor3f((float)lua_tonumber(L, -3)/255.f, (float)lua_tonumber(L, -2)/255.f, (float)lua_tonumber(L, -1)/255.f);
+	glColor3f((float)lua_tonumber(L, -3) / 255.f, (float)lua_tonumber(L, -2) / 255.f, (float)lua_tonumber(L, -1) / 255.f);
 	return 0;
 }
 

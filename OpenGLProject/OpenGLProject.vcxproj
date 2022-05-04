@@ -52,6 +52,7 @@
     <LinkIncremental>false</LinkIncremental>
     <TargetName>core</TargetName>
     <CustomBuildBeforeTargets />
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -83,7 +84,7 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /Y "C:\Users\Jonni\source\repos\Lua51GLWrapper\OpenGLProject\Release\core.dll" "C:\Users\Jonni\Desktop\luasocket2kopiokopio\glwrapper\core.dll"</Command>
+      <Command>copy /Y "C:\Users\Jonni\source\repos\luajitGLWrapper\OpenGLProject\Release\core.dll" "C:\Users\Jonni\Desktop\luajit210b3\glwrapper\core.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

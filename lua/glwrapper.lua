@@ -1,46 +1,12 @@
 require"glwrapper.core"
 
-function CreateDisplay(w,h,title,flags)
-	local w = w or 800
-	local h = h or 600
-	local title = title or "Lua OpenGL"
-	local flags = flags or 0x00000002
-	CreateDisplayUnsafe(w,h,title,flags)
-end
-local temppp = DisplayIsClosed
+local tempDisplayClosed = DisplayIsClosed
 function DisplayIsClosed()
-	local num = temppp()
+	local num = tempDisplayClosed()
 	if num == 0 then return false end
 	if num == 1 then return true end
 end
-function EnableVSync(bool)
-	local bool = bool or 1
-	
-	return EnableVSyncUnsafe(bool)
-end
 
-function GlSetColor(r,g,b)
-	local r = r or 1.0
-	local g = g or 1.0
-	local b = b or 1.0
-	
-	GlSetColorUnsafe(r,g,b)	
-end
-
-function GlSetColorAlpha(r,g,b,a)
-	local r = r or 1.0
-	local g = g or 1.0
-	local b = b or 1.0
-	local a = a or 1.0
-	
-	GlSetColorUnsafeAlpha(r,g,b,a)	
-end
-
-function GlDrawLine(x,y,x2,y2)
-	if x and y and x2 and y2 then
-		GlDrawLineUnsafe(x,y,x2,y2)	
-	end
-end
 
 SDL_WINDOW_FULLSCREEN = 0x00000001         -- fullscreen window 
 SDL_WINDOW_OPENGL = 0x00000002             -- window usable with OpenGL context 
